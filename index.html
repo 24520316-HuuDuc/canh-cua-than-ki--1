@@ -1,13 +1,408 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>canh-cua-than-ki</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#172b35">
+  <title>Cánh Cửa Thần Kì</title>
+
+  <!-- Font chữ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+  <!-- CSS gốc: giữ lại để các hiệu ứng và màn hình cũ tiếp tục hoạt động -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/door.css">
+  <link rel="stylesheet" href="css/dest.css">
+  <link rel="stylesheet" href="css/book.css">
+
+<!-- CSS giao diện trang chủ -->
+<link rel="stylesheet" href="css/home-redesign.css">
+
+<!-- CSS tài khoản, khám phá, cửa sổ -->
+<link rel="stylesheet" href="css/account.css">
+</head>
+<body>
+
+  <!-- =========================================
+       1. TRANG CHỦ: CÁNH CỬA THẦN KÌ
+       Giữ nguyên các ID mà JavaScript cũ đang sử dụng
+  ========================================== -->
+  <div id="world">
+    <div id="bg"></div>
+    <div class="mist m1"><i></i></div>
+    <div class="mist m2"><i></i></div>
+    <div class="tint"></div>
+
+    <main id="stage" class="home-redesign">
+      <!-- Thanh điều hướng -->
+      <header class="site-header">
+        <a class="site-brand" href="#door-intro" aria-label="Cánh Cửa Thần Kì - Trang chủ">
+          <span class="site-brand-mark" aria-hidden="true">✧</span>
+          <span>Cánh Cửa <b>Thần Kì</b></span>
+        </a>
+
+        <div class="site-actions">
+          <button id="explore-btn" class="header-btn" type="button">
+            <span aria-hidden="true">✧</span> <span class="header-btn-label">Khám phá</span>
+          </button>
+          <button id="account-btn" class="header-btn account-btn" type="button" aria-label="Đăng nhập hoặc đăng ký">
+            <span class="account-label">Đăng nhập</span>
+          </button>
+          <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Chuyển giao diện sáng tối" aria-pressed="false">
+            <span class="theme-sun" aria-hidden="true">☼</span>
+            <span class="theme-moon" aria-hidden="true">☾</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Nội dung chính: lời mời bên trái, cửa ma thuật bên phải -->
+      <section class="hero-shell" id="door-intro">
+        <div class="hero-copy">
+          <div class="hero-kicker"><span></span> THE MAGIC GATE <i>·</i> TRAVEL DISCOVERY</div>
+          <h1>Cánh Cửa<br><em>Thần Kì</em></h1>
+          <div class="hero-ornament" aria-hidden="true"><span></span>✦<span></span></div>
+          <p>Mở cánh cửa, khám phá thế giới và bắt đầu chuyến hành trình của riêng bạn. Biết đâu, điểm đến tiếp theo sẽ là nơi bạn chưa từng nghĩ mình sẽ đặt chân đến.</p>
+
+          <!-- Giữ nguyên ID open để chức năng random cũ tiếp tục hoạt động -->
+          <button id="open" type="button" class="open-journey">
+            <span class="open-dice" aria-hidden="true">⚄</span>
+            <span>Bắt đầu chuyến hành trình</span>
+            <span class="open-arrow" aria-hidden="true">→</span>
+          </button>
+          <div class="hero-hint"><span class="hint-star">✧</span> Mỗi lần mở cửa · Một điểm đến ngẫu nhiên · Một hành trình mới</div>
+        </div>
+
+        <!-- Cánh cửa: giữ nguyên toàn bộ cấu trúc và ID gốc -->
+        <div class="door-stage" aria-label="Cánh cửa ma thuật">
+          <div class="door-aura" aria-hidden="true"></div>
+          <div id="doorbox">
+            <div class="floor"></div>
+            <div id="tilt">
+              <div id="door">
+                <div class="portal">
+                  <div class="swirl"></div>
+                  <div id="mcircle"></div>
+                  <div id="pscene"></div>
+                  <div class="pglow"></div>
+                </div>
+                <img class="fimg" src="assets/door-frame.webp" alt="Khung cánh cửa ma thuật" draggable="false">
+                <div class="leaves">
+                  <div class="leaf l"></div>
+                  <div class="leaf r"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="door-caption"><span></span> THE GATE TO EVERYWHERE <span></span></div>
+        </div>
+      </section>
+
+      <!-- Các điểm đến nổi bật -->
+      <section class="featured-destinations" id="featured-destinations" aria-label="Một vài điểm đến nổi bật">
+        <div class="featured-heading">
+          <span aria-hidden="true">✧</span> Những điểm đến đang chờ bạn
+          <button id="featured-more" class="featured-more" type="button">Xem tất cả →</button>
+        </div>
+        <!-- Danh sách lấy từ MongoDB (js/app-ui.js) -->
+        <div class="featured-list is-loading">
+          <div class="featured-card skeleton"></div>
+          <div class="featured-card skeleton"></div>
+          <div class="featured-card skeleton"></div>
+          <div class="featured-card skeleton"></div>
+          <div class="featured-card skeleton"></div>
+        </div>
+        <div class="featured-side-note">Explore the world <span>✧</span></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- =========================================
+       2. HIỆU ỨNG HẠT SÁNG
+  ========================================== -->
+  <canvas id="fx"></canvas>
+
+  <!-- =========================================
+       3. TRANG HIỂN THỊ ĐIỂM ĐẾN
+       Giữ nguyên cấu trúc và ID gốc
+  ========================================== -->
+  <section id="dest">
+    <div id="dscene"></div>
+    <div class="shade"></div>
+    <div class="card">
+      <small>Điểm đến bí ẩn đã mở ra</small>
+      <h2 id="dn"></h2>
+      <b id="dc"></b>
+      <p id="dd"></p>
+      <div class="chips" id="dch"></div>
+      <button id="guide-open" type="button">✧ Mở cuốn sách du lịch</button>
+      <div class="dest-actions">
+        <button id="again" type="button">↺ Mở cánh cửa khác</button>
+        <button id="fav-toggle" class="fav-toggle" type="button" aria-pressed="false">♡ Yêu thích</button>
+        <button id="sv-open" class="sv-open" type="button" hidden>🌐 Xem 360°</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================
+       4. CUỐN SÁCH DU LỊCH
+       Giữ nguyên đầy đủ cấu trúc từ bản gốc
+  ========================================== -->
+  <section id="travel-book" class="travel-book-overlay" aria-hidden="true">
+    <div class="travel-book-backdrop" data-book-dismiss></div>
+
+    <div class="travel-book-dialog" role="dialog" aria-modal="true" aria-labelledby="guide-title">
+      <header class="book-toolbar">
+        <div class="book-brand">
+          <span class="book-brand-mark">✦</span>
+          <div>
+            <small>THE MAGIC ATLAS</small>
+            <span>Cẩm nang du lịch</span>
+          </div>
+        </div>
+        <div class="book-toolbar-note">Mỗi trang là một điểm đến</div>
+        <button id="guide-close" class="book-close" type="button" aria-label="Đóng cẩm nang">✕</button>
+      </header>
+
+      <div class="book-reader">
+        <button id="book-prev" class="book-arrow" type="button" aria-label="Trang trước">‹</button>
+
+        <article id="book-page" class="book-page" aria-live="polite">
+          <div class="book-page-topline">
+            <span id="book-page-number">TRANG 01</span>
+            <span id="book-category">ĐIỂM ĐẾN</span>
+          </div>
+
+          <div class="book-page-layout">
+            <figure class="book-photo-frame">
+              <img id="book-image" src="" alt="" draggable="false" hidden>
+              <div id="book-image-placeholder" class="book-image-placeholder">
+                <span class="placeholder-star">✧</span>
+                <strong id="book-placeholder-title">Ảnh điểm đến</strong>
+                <small id="book-placeholder-path">Chèn ảnh của bạn vào thư mục Camnagdulich</small>
+              </div>
+              <figcaption id="book-image-caption">ẢNH TƯ LIỆU ĐIỂM ĐẾN</figcaption>
+            </figure>
+
+            <div class="book-copy">
+              <small class="book-copy-kicker">A JOURNEY TO REMEMBER</small>
+              <h2 id="guide-title">Tên địa điểm</h2>
+              <p id="book-summary" class="book-summary"></p>
+              <div class="book-divider"><span>✦</span></div>
+              <div id="guide-content" class="book-guide-content"></div>
+            </div>
+          </div>
+
+          <footer class="book-page-footer">
+            <span>CÁNH CỬA THẦN KÌ</span>
+            <span id="book-page-footer-number">01 / 88</span>
+          </footer>
+        </article>
+
+        <button id="book-next" class="book-arrow" type="button" aria-label="Trang tiếp theo">›</button>
+      </div>
+
+      <div class="book-controls">
+        <span id="book-location-counter">01 / 88 địa điểm</span>
+        <div class="book-progress" aria-hidden="true"><span id="book-progress-fill"></span></div>
+        <button id="book-first" type="button">↶ Về trang đầu</button>
+      </div>
+
+      <p class="book-image-help">
+        Nội dung cẩm nang lấy từ cơ sở dữ liệu. Ảnh từng địa điểm lấy theo tên file trong thư mục <code>Camnagdulich/</code>.
+      </p>
+    </div>
+  </section>
+
+  <!-- =========================================
+       5b. CÁC CỬA SỔ: KHÁM PHÁ, ĐĂNG NHẬP, TÀI KHOẢN
+  ========================================== -->
+
+  <!-- Khám phá tất cả điểm đến -->
+  <div id="explore-modal" class="ui-modal" aria-hidden="true">
+    <div class="ui-backdrop" data-close></div>
+    <div class="ui-dialog ui-dialog-wide" role="dialog" aria-modal="true" aria-labelledby="explore-title">
+      <header class="ui-head">
+        <div>
+          <small>THE MAGIC ATLAS</small>
+          <h2 id="explore-title">Tất cả điểm đến</h2>
+        </div>
+        <button class="ui-close" type="button" data-close aria-label="Đóng">✕</button>
+      </header>
+      <div class="ui-toolbar">
+        <input id="explore-search" type="search" placeholder="Tìm theo tên, quốc gia… (gõ không dấu cũng được)" aria-label="Tìm điểm đến" data-autofocus>
+        <select id="explore-country" aria-label="Lọc theo quốc gia">
+          <option value="">Mọi quốc gia</option>
+        </select>
+        <select id="explore-sort" aria-label="Sắp xếp">
+          <option value="name">Tên A–Z</option>
+          <option value="popular">Được khám phá nhiều</option>
+          <option value="newest">Mới thêm</option>
+        </select>
+        <span id="explore-count" class="ui-count"></span>
+      </div>
+      <div class="ui-body">
+        <div id="explore-grid" class="dest-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Đăng nhập / Đăng ký -->
+  <div id="auth-modal" class="ui-modal" aria-hidden="true">
+    <div class="ui-backdrop" data-close></div>
+    <div class="ui-dialog ui-dialog-narrow" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+      <header class="ui-head">
+        <div>
+          <small>CÁNH CỬA THẦN KÌ</small>
+          <h2 id="auth-title">Tài khoản lữ khách</h2>
+        </div>
+        <button class="ui-close" type="button" data-close aria-label="Đóng">✕</button>
+      </header>
+      <div class="ui-body">
+        <p id="auth-note" class="auth-note" hidden></p>
+        <div class="ui-tabs" role="tablist">
+          <button type="button" role="tab" data-auth-tab="login" class="active">Đăng nhập</button>
+          <button type="button" role="tab" data-auth-tab="register">Đăng ký</button>
+        </div>
+
+        <form id="login-form" class="ui-form" novalidate>
+          <label>Email<input id="login-email" type="email" autocomplete="email" required></label>
+          <label>Mật khẩu<input id="login-password" type="password" autocomplete="current-password" required></label>
+          <button type="submit" class="ui-primary">Đăng nhập</button>
+        </form>
+
+        <form id="register-form" class="ui-form" novalidate hidden>
+          <label>Tên hiển thị<input id="register-name" type="text" autocomplete="name" maxlength="60" required></label>
+          <label>Email<input id="register-email" type="email" autocomplete="email" required></label>
+          <label>Mật khẩu<input id="register-password" type="password" autocomplete="new-password" minlength="6" required></label>
+          <label>Nhập lại mật khẩu<input id="register-confirm" type="password" autocomplete="new-password" required></label>
+          <p class="form-hint">Ít nhất 6 ký tự, gồm cả chữ và số.</p>
+          <button type="submit" class="ui-primary">Tạo tài khoản</button>
+        </form>
+
+        <p id="auth-error" class="form-msg error" role="alert"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tài khoản cá nhân -->
+  <div id="account-modal" class="ui-modal" aria-hidden="true">
+    <div class="ui-backdrop" data-close></div>
+    <div class="ui-dialog ui-dialog-wide" role="dialog" aria-modal="true" aria-labelledby="account-title">
+      <header class="ui-head">
+        <div>
+          <small>HÀNH TRÌNH CỦA BẠN</small>
+          <h2 id="account-title">Tài khoản</h2>
+        </div>
+        <button class="ui-close" type="button" data-close aria-label="Đóng">✕</button>
+      </header>
+      <div class="ui-body account-body">
+        <aside class="account-side">
+          <div id="account-user" class="account-user"></div>
+          <div class="ui-tabs vertical" role="tablist">
+            <button type="button" role="tab" data-account-tab="favorites">♥ Yêu thích</button>
+            <button type="button" role="tab" data-account-tab="history">↺ Lịch sử khám phá</button>
+            <button type="button" role="tab" data-account-tab="profile">✎ Thông tin tài khoản</button>
+            <button type="button" role="tab" data-account-tab="password">🔒 Đổi mật khẩu</button>
+          </div>
+          <a id="admin-link" class="admin-link" href="admin.html" hidden>⚙ Trang quản trị</a>
+          <button id="logout-btn" type="button" class="ui-ghost">Đăng xuất</button>
+        </aside>
+
+        <section class="account-main">
+          <div data-account-pane="favorites">
+            <h3 class="pane-title">Địa điểm yêu thích</h3>
+            <div id="favorites-grid" class="dest-grid compact"></div>
+          </div>
+
+          <div data-account-pane="history" hidden>
+            <div class="pane-head">
+              <h3 class="pane-title">Lịch sử khám phá <span id="history-count" class="ui-count"></span></h3>
+              <button id="history-clear" type="button" class="ui-ghost small" hidden>Xóa tất cả</button>
+            </div>
+            <ul id="history-list" class="history-list"></ul>
+          </div>
+
+          <div data-account-pane="profile" hidden>
+            <h3 class="pane-title">Thông tin tài khoản</h3>
+            <form id="profile-form" class="ui-form">
+              <label>Tên hiển thị<input id="profile-name" type="text" maxlength="60" required></label>
+              <label>Email<input id="profile-email" type="email" required></label>
+              <label>Ảnh đại diện (đường dẫn ảnh)<input id="profile-avatar" type="url" placeholder="https://…"></label>
+              <label>Giới thiệu<textarea id="profile-bio" rows="3" maxlength="300" placeholder="Một chút về bạn và những nơi bạn muốn đến…"></textarea></label>
+              <p id="profile-joined" class="form-hint"></p>
+              <button type="submit" class="ui-primary">Lưu thay đổi</button>
+              <p id="profile-msg" class="form-msg" role="status"></p>
+            </form>
+          </div>
+
+          <div data-account-pane="password" hidden>
+            <h3 class="pane-title">Đổi mật khẩu</h3>
+            <form id="password-form" class="ui-form">
+              <label>Mật khẩu hiện tại<input id="password-current" type="password" autocomplete="current-password" required></label>
+              <label>Mật khẩu mới<input id="password-new" type="password" autocomplete="new-password" minlength="6" required></label>
+              <label>Nhập lại mật khẩu mới<input id="password-confirm" type="password" autocomplete="new-password" required></label>
+              <p class="form-hint">Ít nhất 6 ký tự, gồm cả chữ và số.</p>
+              <button type="submit" class="ui-primary">Đổi mật khẩu</button>
+              <p id="password-msg" class="form-msg" role="status"></p>
+            </form>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- Xem 360° (Google Street View) -->
+  <div id="sv-modal" class="sv-modal" aria-hidden="true">
+    <div class="sv-backdrop" data-sv-close></div>
+    <div class="sv-dialog" role="dialog" aria-modal="true" aria-labelledby="sv-title">
+      <header class="sv-head">
+        <div>
+          <small>KHÁM PHÁ 360°</small>
+          <h2 id="sv-title">Điểm đến</h2>
+          <span id="sv-sub"></span>
+        </div>
+        <div class="sv-tools">
+          <a id="sv-external" class="sv-link" href="#" target="_blank" rel="noopener">Mở trên Google Maps ↗</a>
+          <button id="sv-close" class="ui-close" type="button" aria-label="Đóng">✕</button>
+        </div>
+      </header>
+      <nav class="sv-spots-bar" aria-label="Các góc 360°">
+        <button id="sv-prev" class="sv-nav" type="button" aria-label="Góc trước">‹</button>
+        <div id="sv-spots" class="sv-spots"></div>
+        <button id="sv-next" class="sv-nav" type="button" aria-label="Góc tiếp theo">›</button>
+      </nav>
+      <div class="sv-stage">
+        <div id="sv-pano" class="sv-pano"></div>
+        <p id="sv-status" class="sv-status" hidden></p>
+        <div class="sv-caption"><span id="sv-spot-name"></span> <em id="sv-count"></em></div>
+      </div>
+      <p class="sv-hint">Kéo chuột để xoay · cuộn để phóng to · bấm mũi tên trên mặt đường để đi tới · phím [ ] để đổi góc</p>
+    </div>
+  </div>
+
+  <!-- =========================================
+       5. HIỆU ỨNG CHỚP SÁNG CHUYỂN CẢNH
+  ========================================== -->
+  <div id="flash"></div>
+
+  <!-- =========================================
+       6. JAVASCRIPT
+       Giữ thứ tự nạp các file gốc
+  ========================================== -->
+  <script src="js/utils.js"></script>
+  <!-- Dữ liệu địa điểm lấy từ MongoDB qua API (không còn hardcode) -->
+  <script src="js/api.js"></script>
+  <script src="js/scene.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/circle.js"></script>
+  <script src="js/door.js"></script>
+  <script src="js/travel-book.js"></script>
+  <script src="js/home-redesign.js"></script>
+  <script src="js/app-ui.js"></script>
+  <script src="js/streetview.js"></script>
+  <script src="js/main.js"></script>
+</body>
 </html>

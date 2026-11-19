@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Quản trị · Cánh Cửa Thần Kì</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:ital,wght@0,600;0,700;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+  <!-- Màn hình đăng nhập / không có quyền -->
+  <main id="gate" class="gate" hidden>
+    <div class="gate-card">
+      <div class="brand"><span class="brand-mark">✧</span> Cánh Cửa <b>Thần Kì</b></div>
+      <h1>Trang quản trị</h1>
+
+      <form id="gate-login" class="form">
+        <label>Email<input id="gate-email" type="email" autocomplete="email" required></label>
+        <label>Mật khẩu<input id="gate-password" type="password" autocomplete="current-password" required></label>
+        <button class="btn primary" type="submit">Đăng nhập</button>
+        <p id="gate-error" class="msg error" role="alert"></p>
+      </form>
+
+      <div id="gate-denied" hidden>
+        <p class="msg">Tài khoản <b id="gate-who"></b> không có quyền quản trị.</p>
+        <button id="gate-logout" class="btn" type="button">Đăng nhập tài khoản khác</button>
+      </div>
+
+      <a class="back-link" href="index.html">← Về trang chủ</a>
+    </div>
+  </main>
+
+  <!-- Giao diện quản trị -->
+  <div id="app" class="app" hidden>
+    <aside class="side">
+      <div class="brand"><span class="brand-mark">✧</span> <span>Cánh Cửa <b>Thần Kì</b></span></div>
+      <small class="side-kicker">QUẢN TRỊ</small>
+      <nav class="side-nav" aria-label="Mục quản trị">
+        <button type="button" data-view="overview" class="active"><span>◎</span> Tổng quan</button>
+        <button type="button" data-view="destinations"><span>⌖</span> Địa điểm</button>
+        <button type="button" data-view="images"><span>▣</span> Hình ảnh</button>
+        <button type="button" data-view="users"><span>☺</span> Người dùng</button>
+      </nav>
+      <div class="side-foot">
+        <div id="me-box" class="me-box"></div>
+        <a class="btn ghost small" href="index.html">← Xem website</a>
+        <button id="logout" class="btn ghost small" type="button">Đăng xuất</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <!-- Tổng quan -->
+      <section data-panel="overview">
+        <header class="page-head">
+          <div><small>BẢNG ĐIỀU KHIỂN</small><h1>Tổng quan</h1></div>
+          <span id="db-status" class="status-pill">Đang kiểm tra…</span>
+        </header>
+        <div id="stat-cards" class="stat-grid"></div>
+        <div class="two-col">
+          <div class="panel">
+            <h2>Được khám phá nhiều nhất</h2>
+            <ol id="stat-popular" class="rank-list"></ol>
+          </div>
+          <div class="panel">
+            <h2>Thành viên mới</h2>
+            <ul id="stat-users" class="plain-list"></ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Địa điểm -->
+      <section data-panel="destinations" hidden>
+        <header class="page-head">
+          <div><small>NỘI DUNG</small><h1>Quản lý địa điểm</h1></div>
+          <button id="dest-add" class="btn primary" type="button">+ Thêm địa điểm</button>
+        </header>
+        <div class="toolbar">
+          <input id="dest-search" type="search" placeholder="Tìm tên, quốc gia… (không dấu cũng được)" aria-label="Tìm địa điểm">
+          <select id="dest-filter" aria-label="Lọc">
+            <option value="all">Tất cả</option>
+            <option value="active">Đang hiển thị</option>
+            <option value="hidden">Đang ẩn</option>
+            <option value="featured">Nổi bật</option>
+          </select>
+          <span id="dest-count" class="muted"></span>
+        </div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Ảnh</th><th>Tên địa điểm</th><th>Quốc gia</th>
+                <th title="Hiện ở trang chủ">Nổi bật</th><th>Hiển thị</th>
+                <th>Cẩm nang</th><th>Lượt xem</th><th></th>
+              </tr>
+            </thead>
+            <tbody id="dest-rows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Hình ảnh -->
+      <section data-panel="images" hidden>
+        <header class="page-head">
+          <div><small>THƯ VIỆN</small><h1>Quản lý hình ảnh</h1></div>
+          <label class="btn primary">
+            ⇪ Tải ảnh lên
+            <input id="img-input" type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/avif" multiple hidden>
+          </label>
+        </header>
+        <div id="dropzone" class="dropzone">
+          Kéo thả ảnh vào đây để tải lên · JPG, PNG, WEBP, GIF, AVIF · tối đa 8MB mỗi ảnh
+        </div>
+        <div class="toolbar">
+          <div class="seg" role="tablist">
+            <button type="button" data-img-source="uploads" class="active">Ảnh đã tải lên</button>
+            <button type="button" data-img-source="assets">Ảnh có sẵn trong website</button>
+          </div>
+          <input id="img-search" type="search" placeholder="Lọc theo tên ảnh…" aria-label="Lọc ảnh">
+          <span id="img-count" class="muted"></span>
+        </div>
+        <div id="img-grid" class="img-grid"></div>
+      </section>
+
+      <!-- Người dùng -->
+      <section data-panel="users" hidden>
+        <header class="page-head">
+          <div><small>THÀNH VIÊN</small><h1>Quản lý người dùng</h1></div>
+        </header>
+        <div class="toolbar">
+          <input id="user-search" type="search" placeholder="Tìm tên hoặc email…" aria-label="Tìm người dùng">
+          <select id="user-role" aria-label="Lọc quyền">
+            <option value="">Mọi quyền</option>
+            <option value="user">Thành viên</option>
+            <option value="admin">Quản trị viên</option>
+          </select>
+          <span id="user-count" class="muted"></span>
+        </div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Người dùng</th><th>Quyền</th><th>Trạng thái</th>
+                <th>Yêu thích</th><th>Khám phá</th><th>Ngày tham gia</th><th>Đăng nhập gần nhất</th><th></th>
+              </tr>
+            </thead>
+            <tbody id="user-rows"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Form thêm / sửa địa điểm -->
+  <div id="dest-modal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close></div>
+    <form id="dest-form" class="modal-dialog wide" role="dialog" aria-modal="true" aria-labelledby="dest-form-title" novalidate>
+      <header class="modal-head">
+        <h2 id="dest-form-title">Thêm địa điểm</h2>
+        <button type="button" class="icon-btn" data-close aria-label="Đóng">✕</button>
+      </header>
+      <div class="modal-body form-grid">
+        <label>Tên địa điểm *<input name="name" required maxlength="120"></label>
+        <label>Quốc gia *<input name="country" required maxlength="80" list="country-list"></label>
+        <datalist id="country-list"></datalist>
+        <label class="span-2">Dòng phụ dưới tên <small>(vd: Quảng Ninh · Việt Nam — bỏ trống sẽ dùng quốc gia)</small><input name="place" maxlength="120"></label>
+        <label class="span-2">Mô tả ngắn<textarea name="description" rows="3" maxlength="600"></textarea></label>
+
+        <div class="span-2 image-field">
+          <div class="image-preview" id="dest-image-preview"><span>Chưa có ảnh</span></div>
+          <div class="image-inputs">
+            <label>Ảnh chính <small>(assets/images/tokyo, /uploads/abc.jpg hoặc https://…)</small><input name="image" id="dest-image"></label>
+            <div class="row">
+              <button type="button" class="btn small" id="pick-main">Chọn từ thư viện</button>
+              <button type="button" class="btn small" id="pick-gallery">+ Thêm vào ảnh bổ sung</button>
+            </div>
+          </div>
+        </div>
+        <label class="span-2">Ảnh bổ sung <small>(mỗi dòng một đường dẫn)</small><textarea name="gallery" rows="2"></textarea></label>
+
+        <label>Mùa đẹp nhất<input name="season" maxlength="80" placeholder="Tháng 10 – 3"></label>
+        <label>Hoạt động gợi ý<input name="activity" maxlength="80" placeholder="Leo núi, chụp ảnh"></label>
+        <label>Vĩ độ<input name="latitude" inputmode="decimal" placeholder="21.0285"></label>
+        <label>Kinh độ<input name="longitude" inputmode="decimal" placeholder="105.8542"></label>
+
+        <div class="span-2 checks">
+          <label class="check"><input type="checkbox" name="active"> Hiển thị trên website</label>
+          <label class="check"><input type="checkbox" name="featured"> Nổi bật ở trang chủ</label>
+          <label class="check"><input type="checkbox" name="streetViewAvailable"> Cho xem 360°</label>
+        </div>
+
+        <fieldset class="span-2 sv-fields">
+          <legend>Các góc xem 360° (Google Street View) <small id="sv-count-label"></small></legend>
+          <div class="sv-paste span-2">
+            <input id="sv-paste" placeholder="Dán link Google Maps Street View vào đây để thêm góc nhìn nhanh…" aria-label="Dán link Google Maps">
+            <button type="button" class="btn small" id="sv-add">+ Thêm góc trống</button>
+          </div>
+          <div id="sv-rows" class="sv-rows span-2"></div>
+          <p class="hint span-2">Cách lấy góc đẹp: mở Google Maps, kéo hình người vàng vào chỗ muốn xem, xoay tới góc đẹp rồi copy link trên thanh địa chỉ (có dạng <code>…/@48.8606,2.2930,3a,75y,140h,90t/…</code>) và dán vào ô phía trên. Góc đầu tiên sẽ được mở trước.</p>
+        </fieldset>
+
+        <label class="span-2">Nội dung cẩm nang du lịch <small id="guide-count"></small>
+          <textarea name="guide" rows="12" class="mono" placeholder="Đoạn giới thiệu…
+1. Thời điểm nào đẹp nhất để đến…
+Nội dung…
+2. Địa điểm du lịch
+2.1 Tên địa điểm
+Nội dung…
+3. Lịch trình gợi ý
+Buổi sáng – …
+4. Chi phí tham khảo
+…"></textarea>
+          <small class="hint">Mỗi dòng là một đoạn. Sách tự chia trang theo tiêu đề: “1. Thời điểm…”, “2.1 Tên địa điểm” (mỗi địa điểm một trang có ảnh), “3. Lịch trình…”, “4. Chi phí…”.</small>
+        </label>
+      </div>
+      <footer class="modal-foot">
+        <p id="dest-form-msg" class="msg error" role="alert"></p>
+        <button type="button" class="btn" data-close>Hủy</button>
+        <button type="submit" class="btn primary">Lưu địa điểm</button>
+      </footer>
+    </form>
+  </div>
+
+  <!-- Chọn ảnh từ thư viện -->
+  <div id="picker-modal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-dialog wide" role="dialog" aria-modal="true" aria-labelledby="picker-title">
+      <header class="modal-head">
+        <h2 id="picker-title">Chọn ảnh</h2>
+        <button type="button" class="icon-btn" data-close aria-label="Đóng">✕</button>
+      </header>
+      <div class="toolbar in-modal">
+        <div class="seg" role="tablist">
+          <button type="button" data-picker-source="uploads" class="active">Đã tải lên</button>
+          <button type="button" data-picker-source="assets">Có sẵn</button>
+        </div>
+        <input id="picker-search" type="search" placeholder="Lọc theo tên…" aria-label="Lọc ảnh">
+        <label class="btn small">⇪ Tải ảnh mới<input id="picker-upload" type="file" accept="image/*" hidden></label>
+      </div>
+      <div class="modal-body">
+        <div id="picker-grid" class="img-grid small"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-box" role="status" aria-live="polite"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
