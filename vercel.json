@@ -1,0 +1,9 @@
+
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://canh-cua-than-ki.onrender.com/api/$1"
+    }
+  ]
+}
