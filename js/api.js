@@ -7,12 +7,11 @@
    - Mở bằng Live Server / file trực tiếp → gọi http://localhost:3000.
    - Muốn đổi: đặt window.MAGIC_DOOR_API = "https://..." trước khi nạp file này. */
 const API_BASE = (() => {
-  if (typeof window.MAGIC_DOOR_API === "string") return window.MAGIC_DOOR_API.replace(/\/$/, "");
-  const devPorts = ["5500", "5501", "5173", "8080", "8000", "5000"];
-  if (location.protocol === "file:" || devPorts.includes(location.port)) {
-    return "http://localhost:3000";
+  if (typeof window.MAGIC_DOOR_API === "string") {
+    return window.MAGIC_DOOR_API.replace(/\/$/, "");
   }
-  return "";
+
+  return "https://canh-cua-than-ki.onrender.com";
 })();
 
 /* Ảnh tải lên nằm trên server API */
